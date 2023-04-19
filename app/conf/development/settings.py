@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     # Application apps
     'main',
     'accounts',
+    'hackathons',
 ]
 
 MIDDLEWARE = [
