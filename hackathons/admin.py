@@ -5,3 +5,5 @@ from . import models
 admin.site.register(models.Hackathon)
 admin.site.register(models.Fest)
 admin.site.register(models.Esummit)
+admin.site.register(models.teammatesearch)
+

@@ -118,7 +118,7 @@ class SignUpView(GuestOnlyView, FormView):
             act.user = user
             act.save()
 
-            send_activation_email(request, user.email, code)
+           
 
             messages.success(
                 request, _('You are signed up. To activate the account, follow the link sent to the mail.'))
