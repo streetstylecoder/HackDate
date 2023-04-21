@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
+import requests
+import pandas as pd
 
 from . import forms
 from .models import Hackathon, Fest, Esummit,teammatesearch
@@ -119,11 +121,41 @@ def addteamreq(request):
     return render(request, 'addteamreq.html',{'form': form})
 
 def team_analysis(request,slug):
-    model=pickle.load(open('/Users/harshdhariwal/Desktop/hackdate/simple-django-login-and-register/source/content/model/model.pkl','rb+'))
     team=teammatesearch.objects.get(slug=slug)
+    model=pickle.load(open('/Users/harshdhariwal/Desktop/hackdate/simple-django-login-and-register/source/content/model/model.pkl','rb+'))
+    url = f"https://api.github.com/users/{team.github1}/events/public"
+    response = requests.get(url)
+    data = response.json()
+    contributions = len([event for event in data if event['type'] == 'PushEvent'])
+    temp={}
+    temp['contrib1']=len([event for event in data if event['type'] == 'PushEvent'])
+
+    if team.github2:
+        url = f"https://api.github.com/users/{team.github2}/events/public"
+        response = requests.get(url)
+        data = response.json()
+        temp['contrib2'] = len([event for event in data if event['type'] == 'PushEvent'])
+    else:
+        temp['contrib2']=0.0
+    if team.github3:
+        url = f"https://api.github.com/users/{team.github3}/events/public"
+        response = requests.get(url)
+        data = response.json()
+        temp['contrib3'] = len([event for event in data if event['type'] == 'PushEvent'])
+    else:
+        temp['contrib3']=0.0
+    print("contributions found--------------------")
+    print("c1",temp['contrib1'],"c2",temp['contrib2'],"c3",temp['contrib3'])
+    testdata=pd.DataFrame({'x':temp}).transpose()
+    scoreval=model.predict(testdata)[0]
+    print("value comes here-----------")
+    scoreval=int(scoreval)
+    print(scoreval)
     context={
         'team':team,
-
+        'scoreval':scoreval,
+       
+ 
     }
     
     return render(request, 'team_analysis.html',context)
