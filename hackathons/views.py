@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from . import forms
 from .models import Hackathon, Fest, Esummit,teammatesearch
 from .forms import HackForm, Festform, Esform,create_team_request
+import pickle
 
 
 def events(request):
@@ -118,9 +119,12 @@ def addteamreq(request):
     return render(request, 'addteamreq.html',{'form': form})
 
 def team_analysis(request,slug):
+    model=pickle.load(open('/Users/harshdhariwal/Desktop/hackdate/simple-django-login-and-register/source/content/model/model.pkl','rb+'))
     team=teammatesearch.objects.get(slug=slug)
     context={
         'team':team,
+
     }
+    
     return render(request, 'team_analysis.html',context)
 

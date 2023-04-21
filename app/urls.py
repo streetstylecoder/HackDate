@@ -23,6 +23,7 @@ urlpatterns = [
     path('teamsrch',teamsearch,name="teamsearch"),
     path('addteamreq/',addteamreq,name="addteamreq"),
     path('team_analysis/<str:slug>/', team_analysis, name='team_analysis'),
+
     
     
 ]
