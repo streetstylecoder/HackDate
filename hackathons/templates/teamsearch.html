@@ -7,6 +7,13 @@
 
 
 
+<form method="POST">
+    {% csrf_token%}
+    
+    <input name="github_username">
+    <button action="submit">Submit your github username</button>
+    </form>
+
 {% for i in data %}
 
 
@@ -51,6 +58,8 @@
                 {% endif%}
 
                
+                
+
                 <ul class="list-inline">
                   <li class="list-inline-item"><i class="fa fa-user"></i>Team Size: X</li>
                   <li class="list-inline-item"><i class="fa fa-map-marker"></i>Location: City, Country</li>
@@ -62,7 +71,7 @@
                     class="btn btn-danger">Cancel Request
                   </button>
                   {% else %}
-                  <button type="submit"  class="btn btn-success">
+                  <button type="submit"  class="btn btn-success" href="{% url 'maketeamreq' i.slug %}">
                   Send Request</button>
                   {% endif %}
                 {% endif %}

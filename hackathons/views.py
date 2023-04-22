@@ -160,3 +160,28 @@ def team_analysis(request,slug):
     
     return render(request, 'team_analysis.html',context)
 
+
+def teamsendreq(request,slug):
+    if request.method=='POST':
+        github_username=request.POST['github_username']
+    team=teammatesearch.objects.get(slug=slug)
+    hackathon_name=team.hackathon_name
+    team_leader=team.name
+    req_maker = request.user.id
+    Mymodel=teammatesearch.objects.create(
+        hackathon_name=hackathon_name,
+        user_id=req_maker,
+       user_id_rec=req_maker,
+       github_username=github_username,
+    )
+    context={
+        'team':team,
+    }
+    return render(request, 'teamsendreq.html',context)
+
+
+def maketeamreq(request,slug):
+    team=teammatesearch.objects.get(slug=slug)
+    hackathon_name=team.hackathon_name
+    team_leader=team.name
+    req_maker = request.user.id

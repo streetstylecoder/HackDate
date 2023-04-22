@@ -31,6 +31,7 @@ class Esummit(models.Model):
     
 
 class teammatesearch(models.Model):
+    
     hackathon_name=models.CharField(max_length=255,default='hackathon team')
     team=models.CharField(max_length=255,default='team')
     name=models.CharField(max_length=255)
@@ -53,4 +54,19 @@ class teammatesearch(models.Model):
         if not self.slug:
            self.slug=slugify(self.name+"-"+str(self.team))
         return super().save(*args,**kwargs)
+
+
+
+class  team_requests(models.Model):
+    hacakthon_name=models.CharField(max_length=255)
+    user_id=models.CharField(max_length=255)
+    user_id_rec=models.CharField(max_length=255)
+    github_username=models.CharField(max_length=255)
+    def __str__(self):
+        return self.name
     
+class userid_githubuser(models.Model):
+    user_id=models.CharField(max_length=255)
+    github_username=models.CharField(max_length=255)
+    def __str__(self):
+        return self.name
