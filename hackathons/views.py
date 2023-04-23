@@ -3,12 +3,16 @@ from django.http import HttpResponse
 import requests
 import pandas as pd
 from django.contrib import messages
+from quickchart import QuickChart
 
 from . import forms
 from .models import Hackathon, Fest, Esummit,teammatesearch,userid_githubuser,team_requests,hack_register
 from .forms import HackForm, Festform, Esform,create_team_request
 import pickle
-
+qc = QuickChart()
+qc.width = 500
+qc.height = 300
+qc.version = '2'
 
 def events(request):
     data=Hackathon.objects.all()
@@ -133,6 +137,7 @@ def team_analysis(request,slug):
     team=teammatesearch.objects.get(slug=slug)
     model=pickle.load(open('/Users/harshdhariwal/Desktop/hackdate/simple-django-login-and-register/source/content/model/model.pkl','rb+'))
     url = f"https://api.github.com/users/{team.github1}/events/public"
+    
     response = requests.get(url)
     data = response.json()
     contributions = len([event for event in data if event['type'] == 'PushEvent'])
@@ -157,12 +162,34 @@ def team_analysis(request,slug):
     print("c1",temp['contrib1'],"c2",temp['contrib2'],"c3",temp['contrib3'])
     testdata=pd.DataFrame({'x':temp}).transpose()
     scoreval=model.predict(testdata)[0]
+    pscoreval=scoreval*10
+    pscoreval=str(pscoreval)
+    qc.config = """{
+  type: 'radialGauge',
+  data: {
+    datasets: [{
+      data: ["""+ pscoreval +"""],
+      backgroundColor: getGradientFillHelper('horizontal', ['red', 'blue']),
+    }]
+  },
+  options: {
+    // See https://github.com/pandameister/chartjs-chart-radial-gauge#options
+    domain: [0, 100],
+    trackColor: '#f0f8ff', 
+    centerPercentage: 90,
+    centerArea: {
+      text: (val) => val + '%',
+    },
+  }
+}"""
+    graph=qc.get_url()
     print("value comes here-----------")
     scoreval=int(scoreval)
     print(scoreval)
     context={
         'team':team,
         'scoreval':scoreval,
+        'graph':graph
        
  
     }
