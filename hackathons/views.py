@@ -7,7 +7,7 @@ from quickchart import QuickChart
 
 from . import forms
 from .models import Hackathon, Fest, Esummit,teammatesearch,userid_githubuser,team_requests,hack_register
-from .forms import HackForm, Festform, Esform,create_team_request
+from .forms import HackForm, Festform, Esform,create_team_request,team_filter
 import pickle
 qc = QuickChart()
 qc.width = 500
@@ -83,7 +83,16 @@ def home(request):
 
 
 def teamsearch(request):
-    # if request.method=='POST':
+    if request.method=='POST':
+        form=team_filter(request.POST)
+        if form.is_valid():
+            developer_role_required=form.cleaned_data['developer_role_required']
+            preffered_languages=form.cleaned_data['preffered_languages']
+            data=teammatesearch.objects.filter(developer_role_required=developer_role_required)
+            context={'data':data,
+                     'form':form}
+            return render(request, 'teamsearch.html',context)
+            
     #     github_userr=request.POST['github_user']
     #     user_id=request.user.id
     #     Mymodel=userid_githubuser.objects.create(
@@ -91,8 +100,11 @@ def teamsearch(request):
     #         github_username=github_userr,
     #         )
     #     messages.success(request, 'github username attached successfully')
+    else:
+        form=team_filter
     data=teammatesearch.objects.all()
-    context = {'data': data}
+    context = {'data': data,
+               'form':form}
     # if request.method=='Post':
     #    data=request.POST
     #    value=get_object_or_404(teammatesearch, pk=pk)
@@ -101,11 +113,15 @@ def teamsearch(request):
     #        'value': value
     #        }
     #    redirect('team_analysis.html', context)  
+    
+    
+        
   
     return render(request, 'teamsearch.html',context)
 
 def addteamreq(request):
     if request.method == 'POST':
+        
         form = create_team_request(request.POST)
         if form.is_valid():
             mymodel=teammatesearch.objects.create(
@@ -125,6 +141,8 @@ def addteamreq(request):
                 email3=form.cleaned_data['email3'],
                 phone3=form.cleaned_data['phone3'],
                 github3=form.cleaned_data['github3'],
+                developer_role_required=form.cleaned_data['developer_role_required'],
+                preffered_languages=form.cleaned_data['preffered_languages'],
             )
             return HttpResponse('data submitted successfully')
                 

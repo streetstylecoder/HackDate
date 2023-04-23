@@ -47,6 +47,8 @@ class teammatesearch(models.Model):
     phone3=models.CharField(max_length=255,default='0',blank=True)
     github3=models.CharField(max_length=255,blank=True)
     slug=models.CharField(max_length=255,null=True,blank=True)
+    developer_role_required=models.CharField(max_length=255,default='developer')
+    preffered_languages=models.CharField(max_length=255,default='python')
     
     def __str__(self):
         return self.name

@@ -4476,14 +4476,14 @@
    
 
 
-
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
     <section style="margin-top:64px" class="sc-hbjaKc bgicGn">
         <div direction="[object Object]" class="sc-gJwTLC sc-fxvKuh hVWJjW KaVDa">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Submit</button>
-            </form>
+          
             
           
         <div
