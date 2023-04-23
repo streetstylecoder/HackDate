@@ -5,7 +5,7 @@ import pandas as pd
 from django.contrib import messages
 
 from . import forms
-from .models import Hackathon, Fest, Esummit,teammatesearch,userid_githubuser,team_requests
+from .models import Hackathon, Fest, Esummit,teammatesearch,userid_githubuser,team_requests,hack_register
 from .forms import HackForm, Festform, Esform,create_team_request
 import pickle
 
@@ -215,3 +215,19 @@ def swipecards(request):
     data=userid_githubuser.objects.all()
     context = {'data': data}
     return render(request, 'swipecards.html',context)
+
+def hackregister(request,slug):
+   userid=request.user.id
+   hackathon_name=slug
+   Mymodel=hack_register.objects.create(
+       name="harsh",
+       userid=userid,
+       hackathon_name=hackathon_name,
+   )
+   context={
+       'message': 'registered successfully'
+   }
+   return render(request, 'events.html',context)
+       
+       
+    
