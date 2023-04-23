@@ -2,9 +2,10 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 import requests
 import pandas as pd
+from django.contrib import messages
 
 from . import forms
-from .models import Hackathon, Fest, Esummit,teammatesearch
+from .models import Hackathon, Fest, Esummit,teammatesearch,userid_githubuser,team_requests
 from .forms import HackForm, Festform, Esform,create_team_request
 import pickle
 
@@ -78,6 +79,14 @@ def home(request):
 
 
 def teamsearch(request):
+    # if request.method=='POST':
+    #     github_userr=request.POST['github_user']
+    #     user_id=request.user.id
+    #     Mymodel=userid_githubuser.objects.create(
+    #         user_id=user_id,
+    #         github_username=github_userr,
+    #         )
+    #     messages.success(request, 'github username attached successfully')
     data=teammatesearch.objects.all()
     context = {'data': data}
     # if request.method=='Post':
@@ -162,18 +171,8 @@ def team_analysis(request,slug):
 
 
 def teamsendreq(request,slug):
-    if request.method=='POST':
-        github_username=request.POST['github_username']
-    team=teammatesearch.objects.get(slug=slug)
-    hackathon_name=team.hackathon_name
-    team_leader=team.name
-    req_maker = request.user.id
-    Mymodel=teammatesearch.objects.create(
-        hackathon_name=hackathon_name,
-        user_id=req_maker,
-       user_id_rec=req_maker,
-       github_username=github_username,
-    )
+   
+        
     context={
         'team':team,
     }
@@ -181,7 +180,38 @@ def teamsendreq(request,slug):
 
 
 def maketeamreq(request,slug):
+    print("entered maketeam request portal --------------")
     team=teammatesearch.objects.get(slug=slug)
+    print("team name is ",team.name)
     hackathon_name=team.hackathon_name
     team_leader=team.name
     req_maker = request.user.id
+    github_user = userid_githubuser.objects.filter(user_id=request.user.id)[0]
+    Mymodel=team_requests.objects.create(
+        hacakthon_name=hackathon_name,
+        user_id=req_maker,
+        user_id_rec=team_leader,
+        github_username=github_user
+        )
+    
+        
+    data=teammatesearch.objects.all()
+   
+    context={
+        'ans': 'request sent successfully',
+        'data':data
+    }
+    return render(request, 'teamsearch.html',context)
+    
+    
+def myteamrequests(request):
+    data=team_requests.objects.filter(user_id=request.user.id)
+    context={
+        'data':data,
+    }
+    return render(request, 'myteamrequests.html',context)
+
+def swipecards(request):
+    data=userid_githubuser.objects.all()
+    context = {'data': data}
+    return render(request, 'swipecards.html',context)

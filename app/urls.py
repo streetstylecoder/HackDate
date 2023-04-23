@@ -4,7 +4,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 
 from main.views import IndexPageView, ChangeLanguageView
-from hackathons.views import hack_submit, fest_submit, Es_submit,events,home,teamsearch,addteamreq,team_analysis
+from hackathons.views import hack_submit, fest_submit, Es_submit,events,home,teamsearch,addteamreq,team_analysis,maketeamreq,myteamrequests,swipecards
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,6 +23,9 @@ urlpatterns = [
     path('teamsrch',teamsearch,name="teamsearch"),
     path('addteamreq/',addteamreq,name="addteamreq"),
     path('team_analysis/<str:slug>/', team_analysis, name='team_analysis'),
+    path('maketeamreq/<str:slug>/', maketeamreq, name='maketeamreq'),
+    path('myteamrequests/', myteamrequests, name='myteamrequests'),
+    path('swipecards',swipecards,name="swipecards"),
 
     
     

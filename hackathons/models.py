@@ -58,6 +58,7 @@ class teammatesearch(models.Model):
 
 
 class  team_requests(models.Model):
+    name=models.CharField(max_length=255,default='name')
     hacakthon_name=models.CharField(max_length=255)
     user_id=models.CharField(max_length=255)
     user_id_rec=models.CharField(max_length=255)
@@ -66,6 +67,7 @@ class  team_requests(models.Model):
         return self.name
     
 class userid_githubuser(models.Model):
+    name=models.CharField(max_length=255,default='name')
     user_id=models.CharField(max_length=255)
     github_username=models.CharField(max_length=255)
     def __str__(self):

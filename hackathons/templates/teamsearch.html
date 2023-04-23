@@ -5,14 +5,16 @@
 
 {% block content %}
 
+{% if messages %}
+<div class="alert alert-success" role="alert">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</div>
+{% endif %}
 
+{{ans}}
 
-<form method="POST">
-    {% csrf_token%}
-    
-    <input name="github_username">
-    <button action="submit">Submit your github username</button>
-    </form>
 
 {% for i in data %}
 
@@ -65,16 +67,11 @@
                   <li class="list-inline-item"><i class="fa fa-map-marker"></i>Location: City, Country</li>
                 </ul>
                 <a class="btn btn-primary" href="{% url 'team_analysis' i.slug %}">Analyse team</a>
-                {% if user.is_authenticated and user != team.owner %}
-                  {% if request.user in team.requests.all %}
-                  <button type="submit"
-                    class="btn btn-danger">Cancel Request
-                  </button>
-                  {% else %}
-                  <button type="submit"  class="btn btn-success" href="{% url 'maketeamreq' i.slug %}">
-                  Send Request</button>
-                  {% endif %}
-                {% endif %}
+                     
+                  <a class="btn btn-success" href="{% url 'maketeamreq' i.slug %}">Send request</a>
+                  
+                  
+              
               </div>
             </div>
           </div>
