@@ -72,3 +72,11 @@ class userid_githubuser(models.Model):
     github_username=models.CharField(max_length=255)
     def __str__(self):
         return self.name
+    
+    
+class hack_register(models.Model):
+    name=models.CharField(max_length=255,default='name')
+    userid=models.CharField(max_length=255)
+    hackathon_name=models.CharField(max_length=255)    
+    def __str__(self):
+        return self.name
