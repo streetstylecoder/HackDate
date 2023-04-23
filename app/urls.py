@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 
 from main.views import IndexPageView, ChangeLanguageView
 from hackathons.views import hack_submit, fest_submit, Es_submit,events,home,teamsearch,addteamreq,team_analysis,maketeamreq,myteamrequests,swipecards,hackregister
+from swipecollab.views import swipecollab
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,7 +27,7 @@ urlpatterns = [
     path('teamsrch/team_analysis/<str:slug>/', team_analysis, name='team_analysis'),
     path('maketeamreq/<str:slug>/', maketeamreq, name='maketeamreq'),
     path('myteamrequests/', myteamrequests, name='myteamrequests'),
-    path('swipecards',swipecards,name="swipecards"),
+    path('swipecards',swipecollab,name="swipecards"),
      path('hackregister/<str:slug>/', hackregister, name='hackregister'),
     
 
